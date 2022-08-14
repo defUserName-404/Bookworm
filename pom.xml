@@ -15,7 +15,7 @@
 	<description>A library management system</description>
 	<properties>
 		<java.version>17</java.version>
-		<kotlin.version>1.7.0</kotlin.version>
+		<kotlin.version>1.7.10</kotlin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,6 +33,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.30</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
