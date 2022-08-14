@@ -34,17 +34,22 @@ public class Book {
 	@Column(name = "keywords", nullable = false)
 	private List<String> keywords;
 
+	@Column(name = "no_of_copies", nullable = false)
+	private int noOfCopies;
+
 	public Book(
 			String isbn,
 			String title,
 			String author,
 			List<BookCategory> bookCategory,
-			List<String> keywords
+			List<String> keywords,
+			int noOfCopies
 	) {
 		this.isbn = isbn;
 		this.title = title;
 		this.author = author;
 		this.categories = bookCategory;
 		this.keywords = keywords;
+		this.noOfCopies = noOfCopies;
 	}
 }
