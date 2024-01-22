@@ -10,7 +10,7 @@ services:
     depends_on:
       - database
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/bookworm
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/bookworm_dev
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     volumes:
@@ -30,7 +30,7 @@ services:
   database:
     image: postgres:16.1
     environment:
-      POSTGRES_DB: bookworm
+      POSTGRES_DB: bookworm_dev
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
