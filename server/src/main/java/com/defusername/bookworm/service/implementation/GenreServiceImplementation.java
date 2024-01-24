@@ -1,7 +1,6 @@
 package com.defusername.bookworm.service.implementation;
 
 import com.defusername.bookworm.entity.Genre;
-import com.defusername.bookworm.entity.constants.BookCategories;
 import com.defusername.bookworm.repository.GenreRepository;
 import com.defusername.bookworm.service.GenreService;
 import jakarta.transaction.Transactional;
@@ -24,11 +23,6 @@ public class GenreServiceImplementation implements GenreService {
 
 	public List<Genre> getAllGenres() {
 		return genreRepository.findAll();
-	}
-
-	public Genre findGenreByName(BookCategories name) {
-		return genreRepository.findGenreByName(name)
-							  .orElse(null);
 	}
 
 	public Genre addNewGenre(Genre genre) {
