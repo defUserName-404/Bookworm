@@ -1,4 +1,4 @@
-package com.defusername.bookworm.entity.named_constants;
+package com.defusername.bookworm.entity.constants;
 
 public enum FileType {
 

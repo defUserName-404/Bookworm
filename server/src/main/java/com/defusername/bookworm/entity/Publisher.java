@@ -20,7 +20,7 @@ public class Publisher {
 	@Column(name = "name", length = 100, nullable = false, unique = true)
 	private String name;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "publishers")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "publishers")
 	private Set<Book> books = new HashSet<>();
 
 }

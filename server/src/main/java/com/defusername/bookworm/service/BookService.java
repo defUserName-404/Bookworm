@@ -1,54 +1,24 @@
 package com.defusername.bookworm.service;
 
 import com.defusername.bookworm.entity.Book;
-import com.defusername.bookworm.repository.GenreRepository;
-import com.defusername.bookworm.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+@Transactional
+public interface BookService {
 
-	@Autowired
-	private BookRepository bookRepository;
+	List<Book> getAllBooks();
 
-	@Autowired
-	private GenreRepository genreRepository;
+	Optional<Book> getBooksById(Long id);
 
-	public List<Book> getAllBooks() {
-		return bookRepository.findAll();
-	}
+	Book addNewBook(Book book);
 
-	public Optional<Book> getBooksById(Long id) {
-		return bookRepository.findById(id);
-	}
+	Book updateExistingBook(Book updatedBook, Long id);
 
-	public Book addNewBook(Book book) {
-		return bookRepository.save(book);
-	}
-
-	public Book updateExistingBook(Book updatedBook, Long id) {
-		Book existingBook = bookRepository.findById(id)
-										  .orElseThrow();
-		existingBook.setTitle(updatedBook.getTitle());
-		existingBook.setPagesRead(updatedBook.getPagesRead());
-		existingBook.setStatus(updatedBook.getStatus());
-		if (updatedBook.getDescription() != null) {
-			existingBook.setDescription(updatedBook.getDescription());
-		}
-
-		return bookRepository.save(existingBook);
-	}
-
-	public boolean deleteBook(Long id) {
-		if (bookRepository.existsById(id)) {
-			bookRepository.deleteById(id);
-			return true;
-		}
-		return false;
-	}
+	boolean deleteBook(Long id);
 
 }

@@ -1,10 +1,11 @@
 package com.defusername.bookworm.entity;
 
-import com.defusername.bookworm.entity.enums.BookStatus;
-import com.defusername.bookworm.entity.enums.FileType;
+import com.defusername.bookworm.entity.constants.BookStatus;
+import com.defusername.bookworm.entity.constants.FileType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "book")
 @Data
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Book {
 
 	@Id
@@ -28,32 +30,37 @@ public class Book {
 	@Column(name = "isbn", nullable = false, unique = true)
 	private String isbn;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "book_author", joinColumns = {@JoinColumn(name = "book_id")}, inverseJoinColumns = {@JoinColumn(name = "author_id")})
-	private Set<Author> authors = new HashSet<>();
+	private Set<Author> authors;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "book_publisher", joinColumns = {@JoinColumn(name = "book_id")}, inverseJoinColumns = {@JoinColumn(name = "publisher_id")})
-	private Set<Publisher> publishers = new HashSet<>();
+	private Set<Publisher> publishers;
 
 	@Column(name = "page_count")
 	private int pageCount;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "book_id")}, inverseJoinColumns = {@JoinColumn(name = "genre_id")})
-	private Set<Genre> genres = new HashSet<>();
+	@Enumerated(EnumType.STRING)
+	private Set<Genre> genres;
 
 	@Column(name = "file_type", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private FileType fileType;
 
 	@Column(name = "pages_read")
 	private int pagesRead;
 
 	@Column(name = "book_status", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private BookStatus status;
 
-//	@OneToOne
-//	@JoinColumn(name = "file_path_id")
-//	private FilePath filePath;
+	public Book() {
+		this.genres = new HashSet<>();
+		this.authors = new HashSet<>();
+		this.publishers = new HashSet<>();
+	}
 
 }

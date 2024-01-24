@@ -1,8 +1,9 @@
 package com.defusername.bookworm.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,8 @@ import java.util.Set;
 @Entity
 @Table(name = "author")
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Author {
 
 	@Id
@@ -23,7 +25,11 @@ public class Author {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "authors")
-	private Set<Book> books = new HashSet<>();
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "authors")
+	private Set<Book> books;
+
+	public Author() {
+		books = new HashSet<>();
+	}
 
 }
