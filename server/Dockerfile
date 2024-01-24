@@ -19,9 +19,6 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run with OpenJDK
 FROM openjdk:17
 
-# Set the working directory inside the container
-WORKDIR /app
-
 # Copy only the necessary artifacts from the builder stage
 COPY --from=builder /app/target/bookworm-1.0.0-SNAPSHOT.jar .
 

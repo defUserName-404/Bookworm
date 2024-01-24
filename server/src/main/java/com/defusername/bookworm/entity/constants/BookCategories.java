@@ -1,4 +1,4 @@
-package com.defusername.bookworm.entity.enums;
+package com.defusername.bookworm.entity.named_constants;
 
 public enum BookCategories {
 
