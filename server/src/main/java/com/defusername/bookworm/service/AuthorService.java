@@ -16,6 +16,10 @@ public interface AuthorService {
 	Optional<Author> getAuthorById(Long id);
 
 	Author addNewAuthor(Author author);
+	
+	boolean doesAuthorExistByName(String name);
+
+	Optional<Author> findAuthorByName(String name);
 
 	Author updateAuthor(Author updatedAuthor, Long id);
 

@@ -17,31 +17,41 @@ public class AuthorServiceImplementation implements AuthorService {
 	@Autowired
 	private AuthorRepository authorRepository;
 
+	@Override
 	public List<Author> getAllAuthors() {
 		return authorRepository.findAll();
 	}
 
+	@Override
 	public Optional<Author> getAuthorById(Long id) {
 		return authorRepository.findById(id);
 	}
 
+	@Override
 	public Author addNewAuthor(Author author) {
 		return authorRepository.save(author);
 	}
 
-	public Author updateAuthor(Author updatedAuthor, Long id) {
-		Author existingAuthor = authorRepository.findById(id)
-												.orElseThrow();
-		existingAuthor.setName(updatedAuthor.getName());
-		existingAuthor.setDescription(updatedAuthor.getDescription());
-		existingAuthor.getBooks()
-					  .clear();
-		existingAuthor.getBooks()
-					  .addAll(updatedAuthor.getBooks());
-
-		return existingAuthor;
+	@Override
+	public boolean doesAuthorExistByName(String name) {
+		return authorRepository.existsByName(name);
 	}
 
+	@Override
+	public Optional<Author> findAuthorByName(String name) {
+		return authorRepository.findByName(name);
+	}
+
+	@Override
+	public Author updateAuthor(Author updatedAuthor, Long id) {
+		if (!authorRepository.existsById(id)) {
+			throw new IllegalStateException("Id not found");
+		}
+
+		return authorRepository.save(updatedAuthor);
+	}
+
+	@Override
 	public boolean deleteAuthor(Long id) {
 		if (authorRepository.existsById(id)) {
 			authorRepository.deleteById(id);

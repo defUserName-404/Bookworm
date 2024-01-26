@@ -16,32 +16,32 @@ public class BookServiceImplementation implements BookService {
 
 	@Autowired
 	private BookRepository bookRepository;
-	
+
+	@Override
 	public List<Book> getAllBooks() {
 		return bookRepository.findAll();
 	}
 
+	@Override
 	public Optional<Book> getBooksById(Long id) {
 		return bookRepository.findById(id);
 	}
 
+	@Override
 	public Book addNewBook(Book book) {
 		return bookRepository.save(book);
 	}
 
+	@Override
 	public Book updateExistingBook(Book updatedBook, Long id) {
-		Book existingBook = bookRepository.findById(id)
-										  .orElseThrow();
-		existingBook.setTitle(updatedBook.getTitle());
-		existingBook.setPagesRead(updatedBook.getPagesRead());
-		existingBook.setStatus(updatedBook.getStatus());
-		if (updatedBook.getDescription() != null) {
-			existingBook.setDescription(updatedBook.getDescription());
+		if (!bookRepository.existsById(id)) {
+			throw new IllegalStateException("Id not found");
 		}
 
-		return bookRepository.save(existingBook);
+		return bookRepository.save(updatedBook);
 	}
 
+	@Override
 	public boolean deleteBook(Long id) {
 		if (bookRepository.existsById(id)) {
 			bookRepository.deleteById(id);

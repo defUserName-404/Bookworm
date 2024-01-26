@@ -1,5 +1,6 @@
 package com.defusername.bookworm.service;
 
+import com.defusername.bookworm.entity.Author;
 import com.defusername.bookworm.entity.Book;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

@@ -17,14 +17,17 @@ public class GenreServiceImplementation implements GenreService {
 	@Autowired
 	private GenreRepository genreRepository;
 
+	@Override
 	public Optional<Genre> getGenreById(Long id) {
 		return genreRepository.findById(id);
 	}
 
+	@Override
 	public List<Genre> getAllGenres() {
 		return genreRepository.findAll();
 	}
 
+	@Override
 	public Genre addNewGenre(Genre genre) {
 		return genreRepository.save(genre);
 	}
