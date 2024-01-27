@@ -31,19 +31,9 @@ public class AuthorServiceImplementation implements AuthorService {
 	public Author addNewAuthor(Author author) {
 		return authorRepository.save(author);
 	}
-
+	
 	@Override
-	public boolean doesAuthorExistByName(String name) {
-		return authorRepository.existsByName(name);
-	}
-
-	@Override
-	public Optional<Author> findAuthorByName(String name) {
-		return authorRepository.findByName(name);
-	}
-
-	@Override
-	public Author updateAuthor(Author updatedAuthor, Long id) {
+	public Author updateExistingAuthor(Author updatedAuthor, Long id) {
 		if (!authorRepository.existsById(id)) {
 			throw new IllegalStateException("Id not found");
 		}

@@ -23,7 +23,7 @@ public class GenreController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Genre> getBookGenre(@PathVariable Long id) {
+	public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
 		Optional<Genre> bookGenre = genreService.getGenreById(id);
 		return bookGenre.map(ResponseEntity::ok)
 						.orElseGet(() -> ResponseEntity.notFound()
@@ -32,8 +32,19 @@ public class GenreController {
 
 	@PostMapping
 	public ResponseEntity<Genre> addNewGenre(@RequestBody Genre genre) {
-		Genre savedGenre = genreService.addNewGenre(genre);
-		return ResponseEntity.ok(savedGenre);
+		return ResponseEntity.ok(genreService.addNewGenre(genre));
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Genre> updateExistingGenre(@RequestBody Genre updatedGenre, @PathVariable Long id) {
+		return ResponseEntity.ok(genreService.updateExistingGenre(updatedGenre, id));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteGenre(@PathVariable Long id) {
+		boolean deleted = genreService.deleteGenre(id);
+		return deleted ? ResponseEntity.ok("Genre deleted successfully") : ResponseEntity.notFound()
+																						 .build();
 	}
 
 }

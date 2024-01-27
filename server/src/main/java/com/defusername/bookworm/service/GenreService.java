@@ -17,4 +17,8 @@ public interface GenreService {
 
 	Genre addNewGenre(Genre genre);
 
+	Genre updateExistingGenre(Genre updatedGenre, Long id);
+
+	boolean deleteGenre(Long id);
+
 }

@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "author")
 @DynamicUpdate
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Author {
 
@@ -25,5 +26,12 @@ public class Author {
 
 	@Column(name = "description")
 	private String description;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "authors")
+	private Set<Book> books;
+
+	public Author() {
+		books = new HashSet<>();
+	}
 
 }
