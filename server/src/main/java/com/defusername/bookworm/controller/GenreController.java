@@ -2,7 +2,6 @@ package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Genre;
 import com.defusername.bookworm.service.GenreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,11 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 public class GenreController {
 
-	@Autowired
-	private GenreService genreService;
+	private final GenreService genreService;
+
+	public GenreController(GenreService genreService) {
+		this.genreService = genreService;
+	}
 
 	@GetMapping(path = "/all")
 	public List<Genre> getAllGenres() {

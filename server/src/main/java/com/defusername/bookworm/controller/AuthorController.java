@@ -2,7 +2,6 @@ package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Author;
 import com.defusername.bookworm.service.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,11 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthorController {
 
-	@Autowired
-	private AuthorService authorService;
+	private final AuthorService authorService;
+
+	public AuthorController(AuthorService authorService) {
+		this.authorService = authorService;
+	}
 
 	@GetMapping(path = "/all")
 	public List<Author> getAllAuthors() {

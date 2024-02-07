@@ -2,7 +2,6 @@ package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Book;
 import com.defusername.bookworm.service.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +12,12 @@ import java.util.Optional;
 @RequestMapping(path = "api/v1/books")
 @CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
+	
+	private final BookService bookService;
 
-	@Autowired
-	private BookService bookService;
+	public BookController(BookService bookService) {
+		this.bookService = bookService;
+	}
 
 	@GetMapping(path = "/all")
 	public List<Book> getAllBooks() {

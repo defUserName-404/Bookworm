@@ -4,7 +4,6 @@ import com.defusername.bookworm.entity.Genre;
 import com.defusername.bookworm.repository.GenreRepository;
 import com.defusername.bookworm.service.GenreService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Transactional
 public class GenreServiceImplementation implements GenreService {
 
-	@Autowired
-	private GenreRepository genreRepository;
+	private final GenreRepository genreRepository;
+
+	public GenreServiceImplementation(GenreRepository genreRepository) {
+		this.genreRepository = genreRepository;
+	}
 
 	@Override
 	public Optional<Genre> getGenreById(Long id) {

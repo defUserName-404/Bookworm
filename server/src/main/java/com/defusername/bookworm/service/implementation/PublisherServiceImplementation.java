@@ -4,7 +4,6 @@ import com.defusername.bookworm.entity.Publisher;
 import com.defusername.bookworm.repository.PublisherRepository;
 import com.defusername.bookworm.service.PublisherService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Transactional
 public class PublisherServiceImplementation implements PublisherService {
 
-	@Autowired
-	private PublisherRepository publisherRepository;
+	private final PublisherRepository publisherRepository;
+
+	public PublisherServiceImplementation(PublisherRepository publisherRepository) {
+		this.publisherRepository = publisherRepository;
+	}
 
 	@Override
 	public List<Publisher> getAllPublishers() {

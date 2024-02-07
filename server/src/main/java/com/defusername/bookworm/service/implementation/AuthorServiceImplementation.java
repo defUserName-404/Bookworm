@@ -4,7 +4,6 @@ import com.defusername.bookworm.entity.Author;
 import com.defusername.bookworm.repository.AuthorRepository;
 import com.defusername.bookworm.service.AuthorService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Transactional
 public class AuthorServiceImplementation implements AuthorService {
 
-	@Autowired
-	private AuthorRepository authorRepository;
+	private final AuthorRepository authorRepository;
+
+	public AuthorServiceImplementation(AuthorRepository authorRepository) {
+		this.authorRepository = authorRepository;
+	}
 
 	@Override
 	public List<Author> getAllAuthors() {
@@ -31,7 +33,7 @@ public class AuthorServiceImplementation implements AuthorService {
 	public Author addNewAuthor(Author author) {
 		return authorRepository.save(author);
 	}
-	
+
 	@Override
 	public Author updateExistingAuthor(Author updatedAuthor, Long id) {
 		if (!authorRepository.existsById(id)) {

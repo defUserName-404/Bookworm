@@ -2,7 +2,6 @@ package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Publisher;
 import com.defusername.bookworm.service.PublisherService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,11 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 public class PublisherController {
 
-	@Autowired
-	private PublisherService publisherService;
+	private final PublisherService publisherService;
+
+	public PublisherController(PublisherService publisherService) {
+		this.publisherService = publisherService;
+	}
 
 	@GetMapping(path = "/all")
 	public List<Publisher> getAllPublishers() {

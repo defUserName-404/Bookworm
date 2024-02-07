@@ -4,7 +4,6 @@ import com.defusername.bookworm.entity.Book;
 import com.defusername.bookworm.repository.BookRepository;
 import com.defusername.bookworm.service.BookService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Transactional
 public class BookServiceImplementation implements BookService {
 
-	@Autowired
-	private BookRepository bookRepository;
+	private final BookRepository bookRepository;
+
+	public BookServiceImplementation(BookRepository bookRepository) {
+		this.bookRepository = bookRepository;
+	}
 
 	@Override
 	public List<Book> getAllBooks() {
