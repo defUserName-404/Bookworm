@@ -16,17 +16,6 @@ services:
     volumes:
       - shared-data:/app/shared-data
 
-  ui:
-    build:
-      context: ./ui
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - server
-    volumes:
-      - shared-data:/app/shared-data
-
   database:
     image: postgres:16.1
     environment:

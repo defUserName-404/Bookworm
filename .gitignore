@@ -1,4 +1,4 @@
-../HELP.md
+**/HELP.md
 server/target/
 !server/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -32,16 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
-
 ################################
 ################################
-# gitignore files for react app
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# gitignore files for flutter app
 
-# dependencies
-**/node_modules
-**/.pnp
-**/.pnp.js
+#  dependencies
+**/pubspec.lock
+ui/README.md
 
 # testing
 **/coverage
@@ -60,3 +57,55 @@ build/
 **/yarn-debug.log*
 **/yarn-error.log*
 
+**/ephemeral/
+
+# Visual Studio user-specific files.
+**/*.suo
+**/.user
+**/*.userosscache
+**/*.sln.docstates
+
+# Visual Studio build-related files.
+**/x64/
+**/x86/
+
+# Visual Studio cache files
+# files ending in .cache can be ignored
+**/*.[Cc]ache
+# but keep track of directories ending in .cache
+!*.[Cc]ache/
+
+
+**/dgph
+**/*.mode1v3
+**/*.mode2v3
+**/*.moved-aside
+**/*.pbxuser
+**/*.perspectivev3
+**/*sync/
+**/.sconsign.dblite
+**/.tags*
+**/.vagrant/
+**/DerivedData/
+**/Icon?
+**/Pods/
+**/.symlinks/
+**/profile
+**/xcuserdata
+**/.generated/
+**/Flutter/App.framework
+**/Flutter/Flutter.podspec
+**/Flutter/Generated.xcconfig
+**/Flutter/ephemeral/
+**/Flutter/app.flx
+**/Flutter/app.zip
+**/Flutter/flutter_assets/
+**/Flutter/flutter_export_environment.sh
+**/ServiceDefinitions.json
+**/Runner/GeneratedPluginRegistrant.*
+
+# Exceptions to above rules.
+!**/default.mode1v3
+!**/default.mode2v3
+!**/default.pbxuser
+!**/default.perspectivev3
