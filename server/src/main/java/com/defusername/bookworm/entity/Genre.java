@@ -1,19 +1,21 @@
 package com.defusername.bookworm.entity;
 
-import com.defusername.bookworm.entity.constants.BookCategories;
+import com.defusername.bookworm.entity.constants.BookCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "genre")
+@DynamicUpdate
 @Data
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode
 public class Genre {
 
 	@Id
@@ -22,7 +24,7 @@ public class Genre {
 
 	@Column(name = "name", length = 50, nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
-	private BookCategories name;
+	private BookCategory name;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "genres")
 	private Set<Book> books;

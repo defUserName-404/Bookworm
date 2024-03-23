@@ -15,10 +15,8 @@ public interface PublisherService {
 
 	Optional<Publisher> getPublisherById(Long id);
 
-	Publisher addNewPublisher(Publisher publisher);
-
-	Publisher updatePublisher(Publisher updatedpublisher, Long id);
-
+	Publisher addNewOrUpdateExistingPublisher(Publisher publisher);
+	
 	boolean deletePublisher(Long id);
 
 }

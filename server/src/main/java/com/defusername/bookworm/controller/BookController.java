@@ -1,7 +1,9 @@
 package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Book;
+import com.defusername.bookworm.entity.Genre;
 import com.defusername.bookworm.service.BookService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +12,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/books")
-@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
-	
+
 	private final BookService bookService;
 
 	public BookController(BookService bookService) {
@@ -20,33 +21,62 @@ public class BookController {
 	}
 
 	@GetMapping(path = "/all")
-	public List<Book> getAllBooks() {
-		return bookService.getAllBooks();
+	public ResponseEntity<List<Book>> getAllBooks() {
+		final List<Book> allBooks = bookService.getAllBooks();
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allBooks);
 	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Book> getBookById(@PathVariable Long id) {
-		Optional<Book> book = bookService.getBooksById(id);
-		return book.map(ResponseEntity::ok)
-				   .orElseGet(() -> ResponseEntity.notFound()
-												  .build());
+		final Optional<Book> book = bookService.getBooksById(id);
+		final HttpStatus status = book.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .body(book.orElse(null));
 	}
 
-	@PostMapping
+	@PostMapping(path = "")
 	public ResponseEntity<Book> addNewBook(@RequestBody Book book) {
-		return ResponseEntity.ok(bookService.addNewBook(book));
+		final Book createdBook = bookService.addNewOrUpdateExistingBook(book);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdBook);
 	}
 
-	@PutMapping(path = "/{id}")
-	public ResponseEntity<Book> updateExistingBook(@RequestBody Book updatedBook, @PathVariable Long id) {
-		return ResponseEntity.ok(bookService.updateExistingBook(updatedBook, id));
+	@PutMapping(path = "")
+	public ResponseEntity<Book> updateExistingBook(@RequestBody Book updatedBook) {
+		final Book createdBook = bookService.addNewOrUpdateExistingBook(updatedBook);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdBook);
 	}
 
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> deleteBook(@PathVariable Long id) {
-		boolean deleted = bookService.deleteBook(id);
-		return deleted ? ResponseEntity.ok("Book deleted successfully") : ResponseEntity.notFound()
-																						.build();
+		final boolean deleted = bookService.deleteBook(id);
+		final HttpStatus status = deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .build();
+	}
+
+	// ? searching
+	@GetMapping(path = "/author")
+	public ResponseEntity<List<Book>> getBooksByAuthorName(@RequestParam String authorName) {
+		final List<Book> allBooks = bookService.searchBooksByAuthorName(authorName);
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allBooks);
+	}
+
+	@GetMapping(path = "/genre")
+	public ResponseEntity<List<Book>> getBooksByGenreName(@RequestParam String genreName) {
+		final List<Book> allBooks = bookService.searchBookByGenreName(genreName);
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allBooks);
+	}
+
+	@GetMapping(path = "/publisher")
+	public ResponseEntity<List<Book>> getBooksByPublisherName(@RequestParam String publisherName) {
+		final List<Book> allBooks = bookService.searchBooksByPublisherName(publisherName);
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allBooks);
 	}
 
 }

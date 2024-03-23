@@ -1,6 +1,6 @@
 package com.defusername.bookworm.entity.constants;
 
-public enum BookCategories {
+public enum BookCategory {
 
 	FICTION,
 	NON_FICTION,

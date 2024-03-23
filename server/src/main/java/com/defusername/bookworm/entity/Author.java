@@ -2,8 +2,9 @@ package com.defusername.bookworm.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
@@ -13,15 +14,16 @@ import java.util.Set;
 @Table(name = "author")
 @DynamicUpdate
 @Data
+@ToString
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode
 public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", length = 100, nullable = false, unique = true)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
 	@Column(name = "description")

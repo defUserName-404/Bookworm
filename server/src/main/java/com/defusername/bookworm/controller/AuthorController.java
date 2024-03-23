@@ -1,7 +1,9 @@
 package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Author;
+import com.defusername.bookworm.entity.Book;
 import com.defusername.bookworm.service.AuthorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/authors")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthorController {
 
 	private final AuthorService authorService;
@@ -20,33 +21,40 @@ public class AuthorController {
 	}
 
 	@GetMapping(path = "/all")
-	public List<Author> getAllAuthors() {
-		return authorService.getAllAuthors();
+	public ResponseEntity<List<Author>> getAllAuthors() {
+		final List<Author> allAuthors = authorService.getAllAuthors();
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allAuthors);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}")
 	public ResponseEntity<Author> getAuthorById(@PathVariable Long id) {
-		Optional<Author> author = authorService.getAuthorById(id);
-		return author.map(ResponseEntity::ok)
-					 .orElseGet(() -> ResponseEntity.notFound()
-													.build());
+		final Optional<Author> author = authorService.getAuthorById(id);
+		final HttpStatus status = author.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .body(author.orElse(null));
 	}
 
-	@PostMapping
+	@PostMapping(path = "")
 	public ResponseEntity<Author> addNewAuthor(@RequestBody Author author) {
-		return ResponseEntity.ok(authorService.addNewAuthor(author));
+		final Author createdAuthor = authorService.addNewOrUpdateExistingAuthor(author);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdAuthor);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Author> updateExistingAuthor(@RequestBody Author updatedAuthor, @PathVariable Long id) {
-		return ResponseEntity.ok(authorService.updateExistingAuthor(updatedAuthor, id));
+	@PutMapping(path = "")
+	public ResponseEntity<Author> updateExistingAuthor(@RequestBody Author updatedAuthor) {
+		final Author createdAuthor = authorService.addNewOrUpdateExistingAuthor(updatedAuthor);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdAuthor);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteAuthor(@PathVariable Long id) {
-		boolean deleted = authorService.deleteAuthor(id);
-		return deleted ? ResponseEntity.ok("Author deleted successfully") : ResponseEntity.notFound()
-																						  .build();
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Author> deleteAuthor(@PathVariable Long id) {
+		final boolean deleted = authorService.deleteAuthor(id);
+		final HttpStatus status = deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .build();
 	}
 
 }

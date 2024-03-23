@@ -30,19 +30,10 @@ public class GenreServiceImplementation implements GenreService {
 	}
 
 	@Override
-	public Genre addNewGenre(Genre genre) {
+	public Genre addNewOrUpdateExistingGenre(Genre genre) {
 		return genreRepository.save(genre);
 	}
-
-	@Override
-	public Genre updateExistingGenre(Genre updatedGenre, Long id) {
-		if (!genreRepository.existsById(id)) {
-			throw new IllegalStateException("Id not found");
-		}
-
-		return genreRepository.save(updatedGenre);
-	}
-
+	
 	@Override
 	public boolean deleteGenre(Long id) {
 		if (genreRepository.existsById(id)) {

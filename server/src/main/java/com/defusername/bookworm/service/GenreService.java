@@ -15,10 +15,8 @@ public interface GenreService {
 
 	List<Genre> getAllGenres();
 
-	Genre addNewGenre(Genre genre);
-
-	Genre updateExistingGenre(Genre updatedGenre, Long id);
-
+	Genre addNewOrUpdateExistingGenre(Genre genre);
+	
 	boolean deleteGenre(Long id);
 
 }

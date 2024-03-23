@@ -15,10 +15,14 @@ public interface BookService {
 
 	Optional<Book> getBooksById(Long id);
 
-	Book addNewBook(Book book);
-
-	Book updateExistingBook(Book updatedBook, Long id);
+	Book addNewOrUpdateExistingBook(Book book);
 
 	boolean deleteBook(Long id);
+
+	List<Book> searchBooksByAuthorName(String authorName);
+
+	List<Book> searchBookByGenreName(String genreName);
+
+	List<Book> searchBooksByPublisherName(String publisherName);
 
 }
