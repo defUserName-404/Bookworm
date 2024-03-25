@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "genre")
-@DynamicUpdate
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -26,7 +24,7 @@ public class Genre {
 	@Enumerated(EnumType.STRING)
 	private BookCategory name;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "genres")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH}, mappedBy = "genres")
 	private Set<Book> books;
 
 	public Genre() {

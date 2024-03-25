@@ -1,7 +1,6 @@
 package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Book;
-import com.defusername.bookworm.entity.Genre;
 import com.defusername.bookworm.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

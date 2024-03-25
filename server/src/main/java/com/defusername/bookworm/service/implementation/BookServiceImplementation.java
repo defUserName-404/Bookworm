@@ -2,10 +2,7 @@ package com.defusername.bookworm.service.implementation;
 
 import com.defusername.bookworm.entity.Book;
 import com.defusername.bookworm.entity.constants.BookCategory;
-import com.defusername.bookworm.repository.AuthorRepository;
 import com.defusername.bookworm.repository.BookRepository;
-import com.defusername.bookworm.repository.GenreRepository;
-import com.defusername.bookworm.repository.PublisherRepository;
 import com.defusername.bookworm.service.BookService;
 import com.defusername.bookworm.util.exception.IdNotFoundException;
 import com.defusername.bookworm.util.logging.LoggerManager;
