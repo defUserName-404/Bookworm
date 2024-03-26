@@ -3,6 +3,7 @@ package com.defusername.bookworm.service;
 import com.defusername.bookworm.entity.Book;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public interface BookService {
 
 	Optional<Book> getBooksById(Long id);
 
-	Book addNewOrUpdateExistingBook(Book book);
+	Book addNewOrUpdateExistingBook(Book book, MultipartFile attachedFile);
 
 	boolean deleteBook(Long id);
 

@@ -5,6 +5,7 @@ import com.defusername.bookworm.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,16 +35,16 @@ public class BookController {
 							 .body(book.orElse(null));
 	}
 
-	@PostMapping(path = "")
-	public ResponseEntity<Book> addNewBook(@RequestBody Book book) {
-		final Book createdBook = bookService.addNewOrUpdateExistingBook(book);
+	@PostMapping(path = "", consumes = {"multipart/form-data", "application/json"})
+	public ResponseEntity<Book> addNewBook(@RequestPart Book book, @RequestPart MultipartFile file) {
+		final Book createdBook = bookService.addNewOrUpdateExistingBook(book, file);
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(createdBook);
 	}
 
-	@PutMapping(path = "")
-	public ResponseEntity<Book> updateExistingBook(@RequestBody Book updatedBook) {
-		final Book createdBook = bookService.addNewOrUpdateExistingBook(updatedBook);
+	@PutMapping(path = "", consumes = {"multipart/form-data", "application/json"})
+	public ResponseEntity<Book> updateExistingBook(@RequestPart Book updatedBook, @RequestPart MultipartFile file) {
+		final Book createdBook = bookService.addNewOrUpdateExistingBook(updatedBook, file);
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(createdBook);
 	}
