@@ -1,12 +1,14 @@
 package com.defusername.bookworm.service;
 
 import com.defusername.bookworm.util.logging.LoggerManager;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 @Service
@@ -35,8 +37,15 @@ public class FileStorageService {
 		}
 	}
 
-	public void download(Path filePath) {
-
+	public void download(Path sourceFilePath, String downloadLocation, String fileName) {
+		final Path downloadPath = Paths.get(downloadLocation, fileName);
+		try {
+			Files.copy(sourceFilePath, downloadPath);
+		} catch (IOException e) {
+			LoggerManager.getInstance()
+						 .getLogger(FileStorageService.class)
+						 .error("File download failed: \n" + Arrays.toString(e.getStackTrace()));
+		}
 	}
 
 }

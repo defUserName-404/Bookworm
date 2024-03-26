@@ -16,6 +16,8 @@ public interface BookService {
 
 	Optional<Book> getBooksById(Long id);
 
+	Optional<Book> getBookByIdAndDownload(Long id, String downloadLocation);
+
 	Book addNewOrUpdateExistingBook(Book book, MultipartFile attachedFile);
 
 	boolean deleteBook(Long id);

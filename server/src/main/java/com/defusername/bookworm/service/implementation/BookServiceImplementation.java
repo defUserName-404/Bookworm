@@ -24,14 +24,14 @@ public class BookServiceImplementation implements BookService {
 	private final BookRepository bookRepository;
 	private final Logger logger;
 	private final FileStorageService fileStorageService;
-	private final Environment environment;
+	private final String BASE_PATH;
 
 	public BookServiceImplementation(BookRepository bookRepository, Environment environment) {
 		this.bookRepository = bookRepository;
-		this.environment = environment;
 		logger = LoggerManager.getInstance()
 							  .getLogger(BookServiceImplementation.class);
 		fileStorageService = FileStorageService.getInstance();
+		BASE_PATH = environment.getProperty("spring.servlet.multipart.location");
 	}
 
 	@Override
@@ -48,11 +48,26 @@ public class BookServiceImplementation implements BookService {
 	}
 
 	@Override
+	public Optional<Book> getBookByIdAndDownload(Long id, String downloadLocation) {
+		if (!bookRepository.existsById(id)) {
+			logger.info(new IdNotFoundException().getMessage());
+		}
+		final Optional<Book> book = bookRepository.findById(id);
+		if (book.isEmpty()) {
+			return book;
+		}
+		final String filePath = BASE_PATH + "/" + book.get()
+													  .getId();
+		fileStorageService.download(Path.of(filePath), downloadLocation, book.get()
+																		 .getTitle());
+		return book;
+	}
+
+	@Override
 	public Book addNewOrUpdateExistingBook(Book book, MultipartFile attachedFile) {
 		final Book addedBook = bookRepository.save(book);
-		final String basePath
-				= environment.getProperty("spring.servlet.multipart.location");
-		fileStorageService.save(attachedFile, Path.of(basePath + "/" + book.getId()));
+		final String filePath = BASE_PATH + "/" + addedBook.getId();
+		fileStorageService.save(attachedFile, Path.of(filePath));
 		return addedBook;
 	}
 
