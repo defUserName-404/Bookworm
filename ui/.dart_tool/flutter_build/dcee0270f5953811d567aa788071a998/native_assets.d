@@ -1,0 +1,1 @@
+ /home/def-username/Documents/Development/FullStack/Bookworm/ui/.dart_tool/flutter_build/dcee0270f5953811d567aa788071a998/native_assets.yaml: 

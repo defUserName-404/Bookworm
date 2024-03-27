@@ -1,7 +1,6 @@
 package com.defusername.bookworm.service;
 
 import com.defusername.bookworm.util.logging.LoggerManager;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
