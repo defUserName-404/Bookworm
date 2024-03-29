@@ -37,7 +37,7 @@ public class AuthServiceImplementation implements AuthService {
 	}
 
 	@Override
-	public User signIn(SignInDto data) {
+	public void signIn(SignInDto data) {
 		Optional<User> user = userRepository.findUserByUsername(data.username());
 		if (user.isEmpty()) {
 			throw new UsernameNotFoundException("Invalid Username");
@@ -46,7 +46,6 @@ public class AuthServiceImplementation implements AuthService {
 														  .getPassword())) {
 			throw new BadCredentialsException("Invalid password");
 		}
-		return user.get();
 	}
-
+	
 }
