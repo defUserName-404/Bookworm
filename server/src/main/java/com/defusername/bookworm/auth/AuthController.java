@@ -2,7 +2,6 @@ package com.defusername.bookworm.auth;
 
 import com.defusername.bookworm.auth.type.SignInDto;
 import com.defusername.bookworm.auth.type.SignUpDto;
-import com.defusername.bookworm.auth.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<User> signIn(@RequestBody SignInDto data) {
+	public ResponseEntity<?> signIn(@RequestBody SignInDto data) {
 		try {
 			authService.signIn(data);
 			return ResponseEntity.status(HttpStatus.OK)
