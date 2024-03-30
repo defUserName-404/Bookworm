@@ -27,6 +27,5 @@ services:
     volumes:
       - shared-data:/var/lib/postgres
 
-
 volumes:
   shared-data:
