@@ -1,7 +1,7 @@
-package com.defusername.bookworm.auth.user;
+package com.defusername.bookworm.security.auth.user;
 
-import com.defusername.bookworm.auth.entity.User;
-import com.defusername.bookworm.auth.entity.constant.UserRole;
+import com.defusername.bookworm.security.auth.entity.User;
+import com.defusername.bookworm.security.auth.entity.constant.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

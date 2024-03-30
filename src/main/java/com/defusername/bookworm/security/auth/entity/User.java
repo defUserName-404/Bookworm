@@ -1,6 +1,6 @@
-package com.defusername.bookworm.auth.entity;
+package com.defusername.bookworm.security.auth.entity;
 
-import com.defusername.bookworm.auth.entity.constant.UserRole;
+import com.defusername.bookworm.security.auth.entity.constant.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

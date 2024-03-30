@@ -1,10 +1,10 @@
-package com.defusername.bookworm.auth.service.implementation;
+package com.defusername.bookworm.security.auth.service.implementation;
 
-import com.defusername.bookworm.auth.dto.SignInRequest;
-import com.defusername.bookworm.auth.dto.SignUpRequest;
-import com.defusername.bookworm.auth.entity.User;
-import com.defusername.bookworm.auth.service.AuthService;
-import com.defusername.bookworm.auth.repository.UserRepository;
+import com.defusername.bookworm.security.auth.dto.SignInRequest;
+import com.defusername.bookworm.security.auth.dto.SignUpRequest;
+import com.defusername.bookworm.security.auth.entity.User;
+import com.defusername.bookworm.security.auth.service.AuthService;
+import com.defusername.bookworm.security.auth.repository.UserRepository;
 import com.defusername.bookworm.util.exception.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
