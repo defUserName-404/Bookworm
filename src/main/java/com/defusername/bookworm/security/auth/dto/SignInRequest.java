@@ -1,4 +1,4 @@
-package com.defusername.bookworm.auth.dto;
+package com.defusername.bookworm.security.auth.dto;
 
 public record SignInRequest(
 		String username,

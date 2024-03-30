@@ -1,6 +1,6 @@
 package com.defusername.bookworm.security;
 
-import com.defusername.bookworm.auth.entity.constant.UserRole;
+import com.defusername.bookworm.security.auth.entity.constant.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

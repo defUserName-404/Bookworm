@@ -1,8 +1,8 @@
-package com.defusername.bookworm.auth.controller;
+package com.defusername.bookworm.security.auth.controller;
 
-import com.defusername.bookworm.auth.service.AuthService;
-import com.defusername.bookworm.auth.dto.SignInRequest;
-import com.defusername.bookworm.auth.dto.SignUpRequest;
+import com.defusername.bookworm.security.auth.service.AuthService;
+import com.defusername.bookworm.security.auth.dto.SignInRequest;
+import com.defusername.bookworm.security.auth.dto.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
