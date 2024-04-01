@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+</head>
+<body>
+<div layout:fragment="main"
+     class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card p-2 shadow mb-5 bg-body-tertiary rounded text-left w-50">
+        <div class="card-body">
+            <h1 class="h1 p-2 mb-1 card-title text-center">Registration</h1>
+            <h5 class="h5 p-1 text-dark text-center">
+                Register your account to get Ebooks for free!
+            </h5>
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username or password!
+            </div>
+            <form role="form" method="post" th:action="@{/auth/signup}">
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input
+                            required
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            id="username"
+                            aria-describedby="usernameHelp"
+                            autofocus="autofocus"
+                            placeholder="Enter Your Username"
+                    />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label">Username</label>
+                    <input
+                            required
+                            type="text"
+                            name="email"
+                            class="form-control"
+                            id="email"
+                            aria-describedby="emailHelp"
+                            autofocus="autofocus"
+                            placeholder="Enter Your Email"
+                    />
+                </div>
+                <div class="form-group mb-3 rounded">
+                    <label for="passwordInput" class="form-label">Password</label>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           id="passwordInput"
+                           aria-describedby="passwordHelp"/>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3 rounded">
+                    Submit
+                </button>
+                <div class="text-center mb-3">
+                    <a th:href="@{/auth/signin}">Already have an account? Login to that account instead.</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

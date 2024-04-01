@@ -1,6 +1,7 @@
 package com.defusername.bookworm.security;
 
 import com.defusername.bookworm.security.auth.entity.constant.UserRole;
+import com.defusername.bookworm.security.auth.user.AuthUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,19 +11,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private final UserDetailsService userDetailsService;
+	private final AuthUserDetailsService userDetailsService;
 
 	@Autowired
-	public SecurityConfig(UserDetailsService userDetailsService) {
+	public SecurityConfig(AuthUserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
 
@@ -32,16 +33,26 @@ public class SecurityConfig {
 						   .cors(AbstractHttpConfigurer::disable)
 						   .sessionManagement(
 								   session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-						   .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**")
+						   .authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/**")
 																		.permitAll()
 																		.requestMatchers("/api/v1/*/admin/**")
 																		.hasRole(UserRole.ADMIN.toString())
 																		.anyRequest()
 																		.authenticated())
+						   .formLogin(customizer -> customizer.loginPage("/auth/signin")
+															  .loginProcessingUrl("/auth/signin")
+															  .usernameParameter("email_or_username")
+															  .defaultSuccessUrl("/", true)
+															  .failureUrl("/auth/signin?error")
+															  .permitAll())
+						   .logout(customizer -> customizer.invalidateHttpSession(true)
+														   .clearAuthentication(true)
+														   .logoutRequestMatcher(
+																   new AntPathRequestMatcher("/auth/signout"))
+														   .logoutSuccessUrl("/"))
 						   .authenticationProvider(authenticationProvider())
 						   .build();
 	}
-	
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
