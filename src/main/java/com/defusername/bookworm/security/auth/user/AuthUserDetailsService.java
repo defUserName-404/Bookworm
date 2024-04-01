@@ -18,10 +18,11 @@ public class AuthUserDetailsService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) {
-		return userRepository.findUserByUsername(username)
+	public UserDetails loadUserByUsername(String emailOrUsername) {
+		return userRepository.findUserByUsername(emailOrUsername)
+							 .or(() -> userRepository.findUserByEmail(emailOrUsername))
 							 .map(AuthUserDetails::new)
-							 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+							 .orElseThrow(() -> new UsernameNotFoundException("Invalid Username or Email"));
 	}
 
 }

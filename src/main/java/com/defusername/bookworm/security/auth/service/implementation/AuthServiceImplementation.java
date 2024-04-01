@@ -5,6 +5,7 @@ import com.defusername.bookworm.security.auth.dto.SignUpRequest;
 import com.defusername.bookworm.security.auth.entity.User;
 import com.defusername.bookworm.security.auth.service.AuthService;
 import com.defusername.bookworm.security.auth.repository.UserRepository;
+import com.defusername.bookworm.util.exception.EmailAlreadyExistsException;
 import com.defusername.bookworm.util.exception.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,14 +28,19 @@ public class AuthServiceImplementation implements AuthService {
 	}
 
 	@Override
-	public void signUp(SignUpRequest data) {
+	public User signUp(SignUpRequest data) {
 		if (userRepository.findUserByUsername(data.username())
 						  .isPresent()) {
 			throw new UsernameAlreadyExistsException();
 		}
+		if (userRepository.findUserByEmail(data.email())
+						  .isPresent()) {
+			throw new EmailAlreadyExistsException();
+		}
 		final String encryptedPassword = passwordEncoder.encode(data.password());
 		final User newUser = new User(data.username(), data.email(), encryptedPassword, data.role());
 		userRepository.save(newUser);
+		return newUser;
 	}
 
 	@Override
