@@ -33,7 +33,8 @@ public class SecurityConfig {
 						   .cors(AbstractHttpConfigurer::disable)
 						   .sessionManagement(
 								   session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-						   .authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/**")
+						   .authorizeHttpRequests(authorize -> authorize.requestMatchers(
+																				"/auth/**", "/icon.svg")
 																		.permitAll()
 																		.requestMatchers("/api/v1/*/admin/**")
 																		.hasRole(UserRole.ADMIN.toString())
