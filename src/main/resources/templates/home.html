@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Login</title>
+    <title>Home</title>
 </head>
 <body>
-<div layout:fragment="main" class="d-flex align-items-center justify-content-center vh-100">
-    <h3 class="m-lg-5">Welcome to Bookworm, a free open Ebook library. </h3>
+<div layout:fragment="main" class="d-flex align-items-center justify-content-center h-100 w-100 bg-dark text-white">
+    <div class="bg" style="background-image: url('/assets/images/home.jpeg'); 
+                            background-size: cover; 
+                            background-position: center; 
+                            height: 100vh; width: 100vw">
+        <h3 class="m-lg-5 text-center">Welcome to Bookworm, a free open Ebook library. </h3>
+    </div>
 </div>
 </body>
 </html>
