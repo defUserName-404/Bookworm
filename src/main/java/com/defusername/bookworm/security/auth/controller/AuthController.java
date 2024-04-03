@@ -3,7 +3,6 @@ package com.defusername.bookworm.security.auth.controller;
 import com.defusername.bookworm.security.auth.dto.SignUpRequest;
 import com.defusername.bookworm.security.auth.entity.constant.UserRole;
 import com.defusername.bookworm.security.auth.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
