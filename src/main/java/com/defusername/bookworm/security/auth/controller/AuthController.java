@@ -24,7 +24,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public String registerUser(@ModelAttribute("user") SignUpRequest userData, HttpServletRequest request) {
+	public String registerUser(@ModelAttribute("user") SignUpRequest userData) {
 		final SignUpRequest newSignUpRequest = new SignUpRequest(
 				userData.username(),
 				userData.email(),
@@ -32,7 +32,6 @@ public class AuthController {
 				UserRole.USER
 		);
 		authService.signUp(newSignUpRequest);
-//		publisher.publishEvent(new RegistrationCompleteEvent(user, UrlUtil.getApplicationUrl(request)));
 		return "redirect:/auth/login";
 	}
 
