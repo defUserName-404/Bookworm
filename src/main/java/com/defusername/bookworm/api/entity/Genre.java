@@ -3,6 +3,7 @@ package com.defusername.bookworm.api.entity;
 import com.defusername.bookworm.api.entity.constant.BookCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,8 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "genre")
 @Data
+@Builder
 @AllArgsConstructor
-@EqualsAndHashCode
 public class Genre {
 
 	@Id

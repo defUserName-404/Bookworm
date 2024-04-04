@@ -1,5 +1,8 @@
 package com.defusername.bookworm.api.controller;
 
+import com.defusername.bookworm.api.dao.GenreResponse;
+import com.defusername.bookworm.api.dao.PublisherResponse;
+import com.defusername.bookworm.api.dto.PublisherRequest;
 import com.defusername.bookworm.api.entity.Publisher;
 import com.defusername.bookworm.api.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "api/v1/publishers")
+@RequestMapping(path = "/api/v1/publishers")
 public class PublisherController {
 
 	private final PublisherService publisherService;
@@ -22,40 +25,40 @@ public class PublisherController {
 	}
 
 	@GetMapping(path = "/all")
-	public ResponseEntity<List<Publisher>> getAllPublishers() {
-		final List<Publisher> allPublishers = publisherService.getAllPublishers();
+	public ResponseEntity<List<PublisherResponse>> getAllPublishers() {
+		final List<PublisherResponse> allPublishers = publisherService.getAllPublishers();
 		return ResponseEntity.status(HttpStatus.OK)
 							 .body(allPublishers);
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Publisher> getPublisherById(@PathVariable Long id) {
-		final Optional<Publisher> bookPublisher = publisherService.getPublisherById(id);
+	public ResponseEntity<PublisherResponse> getPublisherById(@PathVariable Long id) {
+		final Optional<PublisherResponse> bookPublisher = publisherService.getPublisherById(id);
 		final HttpStatus status = bookPublisher.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 		return ResponseEntity.status(status)
 							 .body(bookPublisher.orElse(null));
 	}
 
 	@PostMapping(path = "/admin")
-	public ResponseEntity<Publisher> addNewPublisher(@RequestBody Publisher publisher) {
-		final Publisher createdPublisher = publisherService.addNewOrUpdateExistingPublisher(publisher);
+	public ResponseEntity<PublisherResponse> addNewPublisher(@RequestBody PublisherRequest publisher) {
+		final PublisherResponse createdPublisher = publisherService.addNewOrUpdateExistingPublisher(publisher);
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(createdPublisher);
 	}
 
 	@PutMapping(path = "/admin")
-	public ResponseEntity<Publisher> updatePublisher(@RequestBody Publisher updatedpublisher) {
-		final Publisher createdPublisher = publisherService.addNewOrUpdateExistingPublisher(updatedpublisher);
+	public ResponseEntity<PublisherResponse> updatePublisher(@RequestBody PublisherRequest updatedpublisher) {
+		final PublisherResponse createdPublisher = publisherService.addNewOrUpdateExistingPublisher(updatedpublisher);
 		return ResponseEntity.status(HttpStatus.CREATED)
 							 .body(createdPublisher);
 	}
 
 	@DeleteMapping(path = "/admin/{id}")
-	public ResponseEntity<String> deletePublisher(@PathVariable Long id) {
-		final boolean deleted = publisherService.deletePublisher(id);
-		final HttpStatus status = deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+	public ResponseEntity<PublisherResponse> deletePublisher(@PathVariable Long id) {
+		final Optional<PublisherResponse> deletedPublisher = publisherService.deletePublisher(id);
+		final HttpStatus status = deletedPublisher.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK;
 		return ResponseEntity.status(status)
-							 .build();
+							 .body(deletedPublisher.orElse(null));
 	}
 
 }

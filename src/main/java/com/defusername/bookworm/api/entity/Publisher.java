@@ -2,6 +2,7 @@ package com.defusername.bookworm.api.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,8 +12,8 @@ import java.util.Set;
 @Entity
 @Table(name = "publisher")
 @Data
+@Builder
 @AllArgsConstructor
-@EqualsAndHashCode
 public class Publisher {
 
 	@Id
