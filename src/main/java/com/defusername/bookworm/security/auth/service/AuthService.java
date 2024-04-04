@@ -10,6 +10,6 @@ public interface AuthService {
 
 	User signUp(SignUpRequest data);
 
-	void signIn(SignInRequest data);
+	User signIn(SignInRequest data);
 
 }

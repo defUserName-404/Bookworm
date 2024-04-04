@@ -1,5 +1,9 @@
 package com.defusername.bookworm.api.service.implementation;
 
+import com.defusername.bookworm.api.dao.BookResponse;
+import com.defusername.bookworm.api.dao.EntityToDaoMapper;
+import com.defusername.bookworm.api.dto.BookRequest;
+import com.defusername.bookworm.api.dto.DtoToEntityMapper;
 import com.defusername.bookworm.api.entity.Book;
 import com.defusername.bookworm.api.entity.constant.BookCategory;
 import com.defusername.bookworm.api.repository.BookRepository;
@@ -17,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
+
 public class BookServiceImplementation implements BookService {
 
 	private final BookRepository bookRepository;
@@ -31,72 +37,100 @@ public class BookServiceImplementation implements BookService {
 	public BookServiceImplementation(BookRepository bookRepository, Environment environment) {
 		this.bookRepository = bookRepository;
 		logger = LoggerManager.getInstance()
-							  .getLogger(BookServiceImplementation.class);
+							  .getLogger(this.getClass());
 		fileStorageService = FileStorageService.getInstance();
 		BASE_PATH = environment.getProperty("spring.servlet.multipart.location");
 	}
 
 	@Override
-	public List<Book> getAllBooks() {
-		return bookRepository.findAll();
+	public List<BookResponse> getAllBooks() {
+		return bookRepository.findAll()
+							 .stream()
+							 .map(EntityToDaoMapper::mapBookEntityToResponse)
+							 .collect(Collectors.toList());
 	}
 
 	@Override
-	public Optional<Book> getBooksById(Long id) {
-		if (!bookRepository.existsById(id)) {
-			logger.info(new IdNotFoundException().getMessage());
-		}
-		return bookRepository.findById(id);
-	}
-
-	@Override
-	public Optional<Book> getBookByIdAndDownload(Long id, String downloadLocation) {
-		if (!bookRepository.existsById(id)) {
-			logger.info(new IdNotFoundException().getMessage());
-		}
+	public Optional<BookResponse> getBooksById(Long id) {
 		final Optional<Book> book = bookRepository.findById(id);
 		if (book.isEmpty()) {
-			return book;
+			logger.info(new IdNotFoundException().getMessage());
+			return Optional.empty();
+		}
+		return book.map(EntityToDaoMapper::mapBookEntityToResponse);
+	}
+
+	@Override
+	public Optional<BookResponse> getBookByIdAndDownload(Long id, String downloadLocation) {
+		final Optional<Book> book = bookRepository.findById(id);
+		if (book.isEmpty()) {
+			logger.info(new IdNotFoundException().getMessage());
+			return Optional.empty();
 		}
 		final String filePath = BASE_PATH + "/" + book.get()
 													  .getId();
 		fileStorageService.download(Path.of(filePath), downloadLocation, book.get()
 																			 .getTitle());
-		return book;
+		return book.map(EntityToDaoMapper::mapBookEntityToResponse);
 	}
 
 	@Override
-	public Book addNewOrUpdateExistingBook(Book book, MultipartFile attachedFile) {
-		final Book addedBook = bookRepository.save(book);
-		final String filePath = BASE_PATH + "/" + addedBook.getId();
-		fileStorageService.save(attachedFile, Path.of(filePath));
-		return addedBook;
+	public BookResponse addNewOrUpdateExistingBook(BookRequest bookRequest, MultipartFile attachedFile) {
+		final Book book = bookRepository.save(Optional.of(bookRequest)
+													  .map(DtoToEntityMapper::mapBookRequestToEntity)
+													  .orElse(null));
+		final BookResponse bookResponse = Optional.of(book)
+												  .map(EntityToDaoMapper::mapBookEntityToResponse)
+												  .orElse(null);
+		if (attachedFile != null) {
+			final String filePath = BASE_PATH + "/" + book.getId();
+			fileStorageService.save(attachedFile, Path.of(filePath));
+		}
+		return bookResponse;
 	}
 
 	@Override
-	public boolean deleteBook(Long id) {
-		if (!bookRepository.existsById(id)) {
+	public Optional<BookResponse> deleteBook(Long id) {
+		final Optional<Book> book = bookRepository.findById(id);
+		if (book.isEmpty()) {
 			logger.info(new IdNotFoundException().getMessage());
-			return false;
+			return Optional.empty();
 		}
 		bookRepository.deleteById(id);
-		return true;
+		return book.map(EntityToDaoMapper::mapBookEntityToResponse);
 	}
 
 	@Override
-	public List<Book> searchBooksByAuthorName(String authorName) {
-		return bookRepository.findByAuthors_NameContainingIgnoreCase(authorName);
+	public List<BookResponse> searchBooksByTitle(String title) {
+		return bookRepository.findAllByTitleContainingIgnoreCase(title)
+							 .stream()
+							 .map(EntityToDaoMapper::mapBookEntityToResponse)
+							 .collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Book> searchBookByGenreName(String genreName) {
+	public List<BookResponse> searchBooksByAuthorName(String authorName) {
+		return bookRepository.findAllByAuthors_NameContainingIgnoreCase(authorName)
+							 .stream()
+							 .map(EntityToDaoMapper::mapBookEntityToResponse)
+							 .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<BookResponse> searchBookByGenreName(String genreName) {
 		final BookCategory bookCategory = BookCategory.valueOf(genreName.toUpperCase());
-		return bookRepository.findByGenres_Name(bookCategory);
+		return bookRepository.findAllByGenres_NameIgnoreCase(bookCategory)
+							 .stream()
+							 .map(EntityToDaoMapper::mapBookEntityToResponse)
+							 .collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Book> searchBooksByPublisherName(String publisherName) {
-		return bookRepository.findByPublishers_NameContainingIgnoreCase(publisherName);
+	public List<BookResponse> searchBooksByPublisherName(String publisherName) {
+		return bookRepository.findAllByPublishers_NameContainingIgnoreCase(publisherName)
+							 .stream()
+							 .map(EntityToDaoMapper::mapBookEntityToResponse)
+							 .collect(Collectors.toList());
 	}
 
 }

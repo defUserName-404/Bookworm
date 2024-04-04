@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -34,23 +33,12 @@ public class SecurityConfig {
 						   .sessionManagement(
 								   session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 						   .authorizeHttpRequests(authorize -> authorize.requestMatchers(
-																				"/auth/**", "/icon.svg")
+																				"/auth/**")
 																		.permitAll()
 																		.requestMatchers("/api/v1/*/admin/**")
 																		.hasRole(UserRole.ADMIN.toString())
 																		.anyRequest()
 																		.authenticated())
-						   .formLogin(customizer -> customizer.loginPage("/auth/signin")
-															  .loginProcessingUrl("/auth/signin")
-															  .usernameParameter("email_or_username")
-															  .defaultSuccessUrl("/", true)
-															  .failureUrl("/auth/signin?error")
-															  .permitAll())
-						   .logout(customizer -> customizer.invalidateHttpSession(true)
-														   .clearAuthentication(true)
-														   .logoutRequestMatcher(
-																   new AntPathRequestMatcher("/auth/signout"))
-														   .logoutSuccessUrl("/"))
 						   .authenticationProvider(authenticationProvider())
 						   .build();
 	}

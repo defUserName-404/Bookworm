@@ -18,7 +18,6 @@ import java.util.Set;
 @Builder
 @DynamicUpdate
 @AllArgsConstructor
-@ToString
 public class Book {
 
 	@Id

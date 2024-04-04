@@ -1,6 +1,7 @@
 package com.defusername.bookworm.api.service;
 
-import com.defusername.bookworm.api.entity.Book;
+import com.defusername.bookworm.api.dao.BookResponse;
+import com.defusername.bookworm.api.dto.BookRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,20 +13,22 @@ import java.util.Optional;
 @Transactional
 public interface BookService {
 
-	List<Book> getAllBooks();
+	List<BookResponse> getAllBooks();
 
-	Optional<Book> getBooksById(Long id);
+	Optional<BookResponse> getBooksById(Long id);
 
-	Optional<Book> getBookByIdAndDownload(Long id, String downloadLocation);
+	Optional<BookResponse> getBookByIdAndDownload(Long id, String downloadLocation);
 
-	Book addNewOrUpdateExistingBook(Book book, MultipartFile attachedFile);
+	BookResponse addNewOrUpdateExistingBook(BookRequest book, MultipartFile attachedFile);
 
-	boolean deleteBook(Long id);
+	Optional<BookResponse> deleteBook(Long id);
+	
+	List<BookResponse> searchBooksByTitle(String title);
 
-	List<Book> searchBooksByAuthorName(String authorName);
+	List<BookResponse> searchBooksByAuthorName(String authorName);
 
-	List<Book> searchBookByGenreName(String genreName);
+	List<BookResponse> searchBookByGenreName(String genreName);
 
-	List<Book> searchBooksByPublisherName(String publisherName);
+	List<BookResponse> searchBooksByPublisherName(String publisherName);
 
 }

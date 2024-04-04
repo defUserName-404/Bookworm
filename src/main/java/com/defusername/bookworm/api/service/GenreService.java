@@ -1,6 +1,7 @@
 package com.defusername.bookworm.api.service;
 
-import com.defusername.bookworm.api.entity.Genre;
+import com.defusername.bookworm.api.dao.GenreResponse;
+import com.defusername.bookworm.api.dto.GenreRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,12 @@ import java.util.Optional;
 @Transactional
 public interface GenreService {
 
-	Optional<Genre> getGenreById(Long id);
+	Optional<GenreResponse> getGenreById(Long id);
 
-	List<Genre> getAllGenres();
+	List<GenreResponse> getAllGenres();
 
-	Genre addNewOrUpdateExistingGenre(Genre genre);
+	GenreResponse addNewOrUpdateExistingGenre(GenreRequest genre);
 
-	boolean deleteGenre(Long id);
+	Optional<GenreResponse> deleteGenre(Long id);
 
 }

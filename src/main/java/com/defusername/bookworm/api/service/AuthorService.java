@@ -1,6 +1,7 @@
 package com.defusername.bookworm.api.service;
 
-import com.defusername.bookworm.api.entity.Author;
+import com.defusername.bookworm.api.dao.AuthorResponse;
+import com.defusername.bookworm.api.dto.AuthorRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,12 @@ import java.util.Optional;
 @Transactional
 public interface AuthorService {
 
-	List<Author> getAllAuthors();
+	List<AuthorResponse> getAllAuthors();
 
-	Optional<Author> getAuthorById(Long id);
+	Optional<AuthorResponse> getAuthorById(Long id);
 
-	Author addNewOrUpdateExistingAuthor(Author author);
+	AuthorResponse addNewOrUpdateExistingAuthor(AuthorRequest author);
 
-	boolean deleteAuthor(Long id);
+	Optional<AuthorResponse> deleteAuthor(Long id);
 
 }

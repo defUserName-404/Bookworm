@@ -1,6 +1,7 @@
 package com.defusername.bookworm.api.service;
 
-import com.defusername.bookworm.api.entity.Publisher;
+import com.defusername.bookworm.api.dao.PublisherResponse;
+import com.defusername.bookworm.api.dto.PublisherRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,12 @@ import java.util.Optional;
 @Transactional
 public interface PublisherService {
 
-	List<Publisher> getAllPublishers();
+	List<PublisherResponse> getAllPublishers();
 
-	Optional<Publisher> getPublisherById(Long id);
+	Optional<PublisherResponse> getPublisherById(Long id);
 
-	Publisher addNewOrUpdateExistingPublisher(Publisher publisher);
+	PublisherResponse addNewOrUpdateExistingPublisher(PublisherRequest publisher);
 	
-	boolean deletePublisher(Long id);
+	Optional<PublisherResponse> deletePublisher(Long id);
 
 }
