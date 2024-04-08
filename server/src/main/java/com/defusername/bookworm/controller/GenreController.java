@@ -2,6 +2,7 @@ package com.defusername.bookworm.controller;
 
 import com.defusername.bookworm.entity.Genre;
 import com.defusername.bookworm.service.GenreService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/genres")
-@CrossOrigin(origins = "http://localhost:3000")
 public class GenreController {
 
 	private final GenreService genreService;
@@ -20,33 +20,40 @@ public class GenreController {
 	}
 
 	@GetMapping(path = "/all")
-	public List<Genre> getAllGenres() {
-		return genreService.getAllGenres();
+	public ResponseEntity<List<Genre>> getAllGenres() {
+		final List<Genre> allGenres = genreService.getAllGenres();
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(allGenres);
 	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
-		Optional<Genre> bookGenre = genreService.getGenreById(id);
-		return bookGenre.map(ResponseEntity::ok)
-						.orElseGet(() -> ResponseEntity.notFound()
-													   .build());
+		final Optional<Genre> bookGenre = genreService.getGenreById(id);
+		final HttpStatus status = bookGenre.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .body(bookGenre.orElse(null));
 	}
 
-	@PostMapping
+	@PostMapping(path = "")
 	public ResponseEntity<Genre> addNewGenre(@RequestBody Genre genre) {
-		return ResponseEntity.ok(genreService.addNewGenre(genre));
+		final Genre createdGenre = genreService.addNewOrUpdateExistingGenre(genre);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdGenre);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Genre> updateExistingGenre(@RequestBody Genre updatedGenre, @PathVariable Long id) {
-		return ResponseEntity.ok(genreService.updateExistingGenre(updatedGenre, id));
+	@PutMapping(path = "")
+	public ResponseEntity<Genre> updateExistingGenre(@RequestBody Genre updatedGenre) {
+		final Genre createdGenre = genreService.addNewOrUpdateExistingGenre(updatedGenre);
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdGenre);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> deleteGenre(@PathVariable Long id) {
-		boolean deleted = genreService.deleteGenre(id);
-		return deleted ? ResponseEntity.ok("Genre deleted successfully") : ResponseEntity.notFound()
-																						 .build();
+		final boolean deleted = genreService.deleteGenre(id);
+		final HttpStatus status = deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+		return ResponseEntity.status(status)
+							 .build();
 	}
 
 }

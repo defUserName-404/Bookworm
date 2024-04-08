@@ -30,17 +30,8 @@ public class PublisherServiceImplementation implements PublisherService {
 	}
 
 	@Override
-	public Publisher addNewPublisher(Publisher publisher) {
+	public Publisher addNewOrUpdateExistingPublisher(Publisher publisher) {
 		return publisherRepository.save(publisher);
-	}
-
-	@Override
-	public Publisher updatePublisher(Publisher updatedpublisher, Long id) {
-		if (!publisherRepository.existsById(id)) {
-			throw new IllegalStateException("Id not found");
-		}
-
-		return publisherRepository.save(updatedpublisher);
 	}
 
 	@Override

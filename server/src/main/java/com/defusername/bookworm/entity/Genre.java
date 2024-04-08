@@ -1,10 +1,10 @@
 package com.defusername.bookworm.entity;
 
-import com.defusername.bookworm.entity.constants.BookCategories;
+import com.defusername.bookworm.entity.constants.BookCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 @Table(name = "genre")
 @Data
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode
 public class Genre {
 
 	@Id
@@ -22,9 +22,9 @@ public class Genre {
 
 	@Column(name = "name", length = 50, nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
-	private BookCategories name;
+	private BookCategory name;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "genres")
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH}, mappedBy = "genres")
 	private Set<Book> books;
 
 	public Genre() {

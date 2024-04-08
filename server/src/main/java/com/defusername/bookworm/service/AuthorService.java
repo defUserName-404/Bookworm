@@ -15,9 +15,7 @@ public interface AuthorService {
 
 	Optional<Author> getAuthorById(Long id);
 
-	Author addNewAuthor(Author author);
-
-	Author updateExistingAuthor(Author updatedAuthor, Long id);
+	Author addNewOrUpdateExistingAuthor(Author author);
 
 	boolean deleteAuthor(Long id);
 
